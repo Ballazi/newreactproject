@@ -20,6 +20,13 @@ const Nav = () => {
                     <NavLink to={"/AddBlog"} style={({ isActive }) => { return { color: isActive ? "blue" : "white", textDecoration: "none" } }}></NavLink>
                 </Grid>
                 {
+                    isLoggedIn === "true" ?
+                    <Grid item >
+                    <NavLink to={"/appBlog"} style={({ isActive }) => { return { color: isActive ? "blue" : "white", textDecoration: "none" } }}>Add Blog</NavLink>
+                    </Grid>
+                    : ""
+                }
+                {
                     isLoggedIn !== "true" ?
                     <Grid item >
                     <NavLink to={"/Signup"} style={({ isActive }) => { return { color: isActive ? "blue" : "white", textDecoration: "none" } }}>SIGNUP</NavLink>

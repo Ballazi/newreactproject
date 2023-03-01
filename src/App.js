@@ -12,6 +12,7 @@ import Footer from './Footer';
 import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
 import { styled } from "@mui/material/styles";
+import AddBlogs from './components/add blogs/AddBlogs';
 
 const Wrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
@@ -34,8 +35,6 @@ function App() {
   const login = localStorage.getItem("login");
   const navigate = useNavigate();
 
-  console.log("path and login check", path, login);
-
   useEffect(() => {
     if(path === "/" && login === null)
     {
@@ -47,7 +46,13 @@ function App() {
       navigate("/Travelling");
     }
     else if (path !== "/" && login === null) {
-      navigate("/Signin");
+      if(path === "/Signup")
+      {
+        navigate("/Signup")
+      }
+      else{
+        navigate("/Signin");
+      }
     }
   }, [path])
   
@@ -64,6 +69,7 @@ function App() {
             <Route exact path='/Profile' element={<Profile />} />
             <Route exact path='/Signin' element={<SignIn />} />
             <Route exact path='/Signup' element={<SignUp />} />
+            <Route exact path="/appBlog" element={<AddBlogs />} />
           </Routes>
         </Wrapper>
       </Grid>

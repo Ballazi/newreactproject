@@ -46,7 +46,7 @@ const SignUp = () => {
             setEmail("");
             setPassword("");
             setName("");
-            setTimeout(() => {navigate("/Signin")}, 3000);
+            setTimeout(() => {navigate("/Signin")}, 1000);
           }
           else {
             setObj({ type: "warning", message: response.data.message });

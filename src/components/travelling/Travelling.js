@@ -10,8 +10,6 @@ import RecipeReviewCard from "../card/Card";
 import { Grid } from '@mui/material';
 
 const Travelling = () => {
-    const [value, setValue] = useState(null);
-    const [options, setOptions] = useState([]);
     const token = localStorage.getItem('token');
     const [open, setOpen] = useState(false);
     const [obj, setObj] = useState({
@@ -28,7 +26,6 @@ const Travelling = () => {
 
     useEffect(() => {
         getAllBlogs();
-        getAllOptionsData();
     }, [])
 
     const getAllBlogs = () => {
@@ -42,42 +39,10 @@ const Travelling = () => {
             }
         )
             .then(response => {
-                setOptions([]);
                 if (response.data.success) {
                     setObj({ type: "success", message: response.data.message });
                     setOpneNotification(true);
                     setItems(response.data.data);
-                }
-                else {
-                    setObj({ type: "warning", message: response.data.message });
-                    setOpneNotification(true);
-                }
-            })
-            .catch(error => {
-                setObj({ type: "warning", message: error.response.data.message });
-                setOpneNotification(true);
-            })
-            .finally(() => {
-                setOpen(false);
-            })
-    }
-
-    const getAllOptionsData = () => {
-        setOpen(true);
-        axios.get(
-            apiUrl.categoryBlogsSearch + "Travelling",
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
-        )
-            .then(response => {
-                setOptions([]);
-                if (response.data.success) {
-                    setObj({ type: "success", message: response.data.message });
-                    setOpneNotification(true);
-                    (response.data.data).map(ele => setOptions(currentItem => [...currentItem, ele.title]));
                 }
                 else {
                     setObj({ type: "warning", message: response.data.message });

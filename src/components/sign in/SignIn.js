@@ -39,9 +39,9 @@ const SignUp = () => {
       )
         .then(res => {
           if (res.data.success) {
-            console.log("datas...!",res.data.data);
+            console.log("datas...!", res.data.data);
             localStorage.setItem("login", true);
-            localStorage.setItem("token",res.data.data.token);
+            localStorage.setItem("token", res.data.data.token);
             localStorage.setItem("currentUserId", res.data.data.currentUser.id);
             setObj({ type: "success", message: res.data.message });
             setOpneNotification(true);
@@ -55,8 +55,16 @@ const SignUp = () => {
           }
         })
         .catch(error => {
-          setObj({ type: "warning", message: error.response.data.message });
-          setOpneNotification(true);
+          console.log("catch block", error.response);
+          if (error.response.status === 400) {
+            setObj({ type: "warning", message: error.response.data.message });
+            setOpneNotification(true);
+            setTimeout(() => navigate("/Signup"), 1000);
+          }
+          else {
+            setObj({ type: "warning", message: error.response.data.message });
+            setOpneNotification(true);
+          }
         })
         .finally(() => {
           setOpen(false);
