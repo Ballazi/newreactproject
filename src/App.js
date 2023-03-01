@@ -1,23 +1,73 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
+import Nav from "./Nav";
+import Food from "./components/food/Food";
+import Travelling from './components/travelling/Travelling';
+import Entertainment from "./components/entertainment/Entertainment";
+import Profile from "./components/profile/Profile";
+import SignIn from "./components/sign in/SignIn";
+import SignUp from "./components/sign up/SignUp";
+import Footer from './Footer';
+import Paper from '@mui/material/Paper';
+import { Grid } from '@mui/material';
+import { styled } from "@mui/material/styles";
+
+const Wrapper = styled(Paper)(({ theme }) => ({
+  padding: "10px",
+  width: "80%",
+  marginTop:"2%",
+  marginBottom:"5%",
+  [theme.breakpoints.down("md")]: {
+    marginTop:"4%",
+    marginBottom:"9%",
+  },
+  [theme.breakpoints.down("sm")]: {
+    marginTop:"6%",
+    marginBottom:"15%",
+  },
+}));
+
 
 function App() {
+  const path = window.location.pathname;
+  const login = localStorage.getItem("login");
+  const navigate = useNavigate();
+
+  console.log("path and login check", path, login);
+
+  useEffect(() => {
+    if(path === "/" && login === null)
+    {
+      localStorage.clear();
+      navigate("/Signin");
+    }
+    else if(path === "/" && login === "true")
+    {
+      navigate("/Travelling");
+    }
+    else if (path !== "/" && login === null) {
+      navigate("/Signin");
+    }
+  }, [path])
+  
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav />
+      <Grid container justifyContent="center" alignItems={"center"}>
+        <Wrapper elevation={3}>
+          <Routes>
+            <Route exact path='/Travelling' element={<Travelling />} />
+            <Route exact path='/Food' element={<Food />} />
+            <Route exact path='/Entertainment' element={<Entertainment />} />
+            <Route exact path='/Profile' element={<Profile />} />
+            <Route exact path='/Signin' element={<SignIn />} />
+            <Route exact path='/Signup' element={<SignUp />} />
+          </Routes>
+        </Wrapper>
+      </Grid>
+      <Footer />
     </div>
   );
 }

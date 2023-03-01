@@ -1,0 +1,9 @@
+{
+    "login" : "http://localhost:8000/api/login",
+    "register" : "http://localhost:8000/api/register",
+    "categoryBlogsSearch" : "http://localhost:8000/api/blog/categoryBlogsSearch/",
+    "getCategoryBlogs" : "http://localhost:8000/api/blog/categoryBlogs/",
+    "follow" : "http://localhost:8000/api/user/folow",
+    "categoryWiseLike" : "http://localhost:8000/api/blog/categoryUserLike/",
+    "like" : "http://localhost:8000/api/blog/like"
+}
