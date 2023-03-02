@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,21 +8,14 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import img from "../../asset/images.jpg";
 import moment from 'moment/moment';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import PersonIcon from '@mui/icons-material/Person';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import apiUrl from "../../api/api.json";
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Notification from '../../Notification';
+import { NavLink } from "react-router-dom";
 
 
 export default function RecipeReviewCard(props) {
@@ -121,37 +113,37 @@ export default function RecipeReviewCard(props) {
 
             {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
 
-
-            <Card sx={{ maxWidth: "100%", height: "380px" }}>
-                <CardHeader
-                    avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                            {props.ele.bloggerName.charAt(0)}
-                        </Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="add to favorites" title='Follow Blogger'>
-                            {
-                                follow ? <PersonIcon onClick={() => followController(props.ele.bloggerId)} /> : <PersonOutlineIcon onClick={() => followController(props.ele.bloggerId)} />
-                            }
-                        </IconButton>
-                    }
-                    title={props.ele.bloggerName}
-                    subheader={moment(props.ele.created_at).format("MMMM D, YYYY")}
-                />
-                <CardMedia
-                    component="img"
-                    height="194"
-                    image={props.ele.image}
-                    alt="Paella dish"
-                />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary" fontWeight={600}>
-                        {props.ele.title}
-                    </Typography>
-                </CardContent>
-                <CardActions >
-                    <IconButton aria-label="add to favorites" title='Like'>
+            <NavLink to={`/${props.type}/${props.ele.title}`} state={props.ele.blog_id} style={{ textDecoration: "none" }}>
+                <Card sx={{ maxWidth: "100%", height: "380px" }}>
+                    <CardHeader
+                        avatar={
+                            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                {props.ele.bloggerName.charAt(0)}
+                            </Avatar>
+                        }
+                        // action={
+                        //     <IconButton aria-label="add to favorites" title='Follow Blogger'>
+                        //         {
+                        //             follow ? <PersonIcon onClick={() => followController(props.ele.bloggerId)} /> : <PersonOutlineIcon onClick={() => followController(props.ele.bloggerId)} />
+                        //         }
+                        //     </IconButton>
+                        // }
+                        title={props.ele.bloggerName}
+                        subheader={moment(props.ele.created_at).format("MMMM D, YYYY")}
+                    />
+                    <CardMedia
+                        component="img"
+                        height="194"
+                        image={props.ele.image}
+                        alt="Paella dish"
+                    />
+                    <CardContent>
+                        <Typography variant="body2" color="text.secondary" fontWeight={600}>
+                            {props.ele.title}
+                        </Typography>
+                    </CardContent>
+                    <CardActions >
+                        {/* <IconButton aria-label="add to favorites" title='Like'>
                         {
                             like ? <ThumbUpAltIcon onClick={() => likeController(props.ele.blog_id)} /> : <ThumbUpOffAltIcon onClick={() => likeController(props.ele.blog_id)} />
                         }
@@ -160,12 +152,13 @@ export default function RecipeReviewCard(props) {
                         {
                             unLike ? <ThumbDownAltIcon onClick={() => { setUnLike(!unLike) }} /> : <ThumbDownOffAltIcon onClick={() => { setUnLike(!unLike) }} />
                         }
-                    </IconButton>
-                    {/* <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton> */}
-                </CardActions>
-            </Card>
+                    </IconButton> */}
+                        <IconButton aria-label="share">
+                            <ShareIcon />
+                        </IconButton>
+                    </CardActions>
+                </Card>
+            </NavLink>
         </>
     );
 }

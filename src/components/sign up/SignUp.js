@@ -11,6 +11,7 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pic, setPic] = useState("");
   const [open, setOpen] = useState(false);
   const [obj, setObj] = useState({
     type: "",
@@ -36,7 +37,8 @@ const SignUp = () => {
         {
           name,
           email,
-          password
+          password,
+          pic
         }
       )
         .then(response => {
@@ -46,7 +48,7 @@ const SignUp = () => {
             setEmail("");
             setPassword("");
             setName("");
-            setTimeout(() => {navigate("/Signin")}, 1000);
+            setTimeout(() => { navigate("/Signin") }, 1000);
           }
           else {
             setObj({ type: "warning", message: response.data.message });
@@ -75,6 +77,15 @@ const SignUp = () => {
       {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
 
       <Grid container spacing={2} justifyContent="center" alignItems={"center"}>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            size='small'
+            variant='outlined'
+            label="Profile pic url"
+            value={pic}
+            onChange={e => setPic(e.target.value)}
+          />
+        </Grid>
         <Grid item xs={12} sm={12} md={12}>
           <TextField
             size='small'

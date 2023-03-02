@@ -74,11 +74,11 @@ const Travelling = () => {
             {
                 <Grid container spacing={2}>
                     {
-                        items.length === 0 ? "Oops...! There is no any blogs in Travelling category" :
+                        items.length === 0 && open === false ? "Oops...! There is no any blogs in Travelling category" :
                         items.map(ele => {
                             return (
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <RecipeReviewCard ele = {ele} />
+                                    <RecipeReviewCard ele = {ele} type="Travelling" />
                                 </Grid>
                             )
                         })

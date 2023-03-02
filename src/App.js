@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
 import { styled } from "@mui/material/styles";
 import AddBlogs from './components/add blogs/AddBlogs';
+import ContentPage from './components/content page/ContentPage';
 
 const Wrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
@@ -70,6 +71,7 @@ function App() {
             <Route exact path='/Signin' element={<SignIn />} />
             <Route exact path='/Signup' element={<SignUp />} />
             <Route exact path="/appBlog" element={<AddBlogs />} />
+            <Route exact path="/:type/:title" element={<ContentPage />} />
           </Routes>
         </Wrapper>
       </Grid>

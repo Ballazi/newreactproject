@@ -6,5 +6,7 @@
     "follow" : "http://localhost:8000/api/user/folow",
     "categoryWiseLike" : "http://localhost:8000/api/blog/categoryUserLike/",
     "like" : "http://localhost:8000/api/blog/like",
-    "addBlog" : "http://localhost:8000/api/blog/add"
+    "addBlog" : "http://localhost:8000/api/blog/add",
+    "blogDetail" : "http://localhost:8000/blogDetail/",
+    "profile" : "http://localhost:8000/api/user/profile/"
 }
