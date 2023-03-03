@@ -113,21 +113,14 @@ export default function RecipeReviewCard(props) {
 
             {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
 
-            <NavLink to={`/${props.type}/${props.ele.title}`} state={props.ele.blog_id} style={{ textDecoration: "none" }}>
-                <Card sx={{ maxWidth: "100%", height: "380px" }}>
+            <NavLink to={`/${props.type}/${props.ele.title}`} state={[{blogId:props.ele.blog_id},{bloggerId:props.ele.bloggerId}]} style={{ textDecoration: "none" }}>
+                <Card sx={{ maxWidth: "100%", height: "350px" }}>
                     <CardHeader
                         avatar={
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                                 {props.ele.bloggerName.charAt(0)}
                             </Avatar>
                         }
-                        // action={
-                        //     <IconButton aria-label="add to favorites" title='Follow Blogger'>
-                        //         {
-                        //             follow ? <PersonIcon onClick={() => followController(props.ele.bloggerId)} /> : <PersonOutlineIcon onClick={() => followController(props.ele.bloggerId)} />
-                        //         }
-                        //     </IconButton>
-                        // }
                         title={props.ele.bloggerName}
                         subheader={moment(props.ele.created_at).format("MMMM D, YYYY")}
                     />
@@ -143,19 +136,6 @@ export default function RecipeReviewCard(props) {
                         </Typography>
                     </CardContent>
                     <CardActions >
-                        {/* <IconButton aria-label="add to favorites" title='Like'>
-                        {
-                            like ? <ThumbUpAltIcon onClick={() => likeController(props.ele.blog_id)} /> : <ThumbUpOffAltIcon onClick={() => likeController(props.ele.blog_id)} />
-                        }
-                    </IconButton>
-                    <IconButton aria-label="add to favorites" title='Unlike'>
-                        {
-                            unLike ? <ThumbDownAltIcon onClick={() => { setUnLike(!unLike) }} /> : <ThumbDownOffAltIcon onClick={() => { setUnLike(!unLike) }} />
-                        }
-                    </IconButton> */}
-                        <IconButton aria-label="share">
-                            <ShareIcon />
-                        </IconButton>
                     </CardActions>
                 </Card>
             </NavLink>
