@@ -22,6 +22,19 @@ const Wrapper = styled(Grid)(({ theme }) => ({
   },
 }));
 
+const CustomTypography = styled(Typography)(({ theme }) => ({
+  background: 'linear-gradient(#f7efd7, #00e676, #009688)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+}));
+
+
+const CustomTypography2 = styled(Typography)(({ theme }) => ({
+  background: 'linear-gradient(#f7efd7, blue)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+}));
+
 
 
 const Profile = () => {
@@ -90,7 +103,7 @@ const Profile = () => {
       </Backdrop>
 
       {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
-      {console.log("profile...!", profileObject)}
+      {/* {console.log("profile...!", profileObject)} */}
 
       <Grid container justifyContent={"center"} alignItems={"center"}>
         <Wrapper item sx={{ width: "70%" }}>
@@ -103,31 +116,32 @@ const Profile = () => {
                 alt="Paella dish"
                 sx={{
                   height: "450px",
-                  width: '100%'
+                  width: '100%',
+                  objectFit:"contain"
                 }}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={6}>
               <Grid container spacing={2} sx={{ pt: "20%" }}>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Typography variant='h4' fontWeight={"600"}>
+                  <CustomTypography variant='h4' fontWeight={"600"}>
                     {profileObject.name}
-                  </Typography>
+                  </CustomTypography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Typography variant='h6' fontWeight={"600"} color="blue">
+                  <CustomTypography2 variant='h6' fontWeight={"600"}>
                     Followers : {profileObject.follow}
-                  </Typography>
+                  </CustomTypography2>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Typography variant='h6' fontWeight={"600"} color="blue">
+                  <CustomTypography2 variant='h6' fontWeight={"600"}>
                     Following : {profileObject.following}
-                  </Typography>
+                  </CustomTypography2>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Typography variant='h6' fontWeight={"600"} color="blue">
+                  <CustomTypography2 variant='h6' fontWeight={"600"}>
                     Total Blogs : {profileObject.total_blogs}
-                  </Typography>
+                  </CustomTypography2>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                   <Button
