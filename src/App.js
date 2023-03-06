@@ -14,6 +14,9 @@ import { Grid } from '@mui/material';
 import { styled } from "@mui/material/styles";
 import AddBlogs from './components/add blogs/AddBlogs';
 import ContentPage from './components/content page/ContentPage';
+import Followers from './components/follow page/Followers';
+import Followings from './components/follow page/Followings';
+import UserDetails from './components/user detail/UserDetails';
 
 const Wrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
@@ -62,7 +65,7 @@ function App() {
     <div className="App">
       <Nav />
       <Grid container justifyContent="center" alignItems={"center"}>
-        <Wrapper elevation={3}>
+        <Wrapper elevation={0}>
           <Routes>
             <Route exact path='/Travelling' element={<Travelling />} />
             <Route exact path='/Food' element={<Food />} />
@@ -72,6 +75,9 @@ function App() {
             <Route exact path='/Signup' element={<SignUp />} />
             <Route exact path="/appBlog" element={<AddBlogs />} />
             <Route exact path="/:type/:title" element={<ContentPage />} />
+            <Route exact path="/user/followres" element={<Followers />} />
+            <Route exact path="/user/following" element={<Followings />} />
+            <Route exact path="/user/details" element={<UserDetails />} />
           </Routes>
         </Wrapper>
       </Grid>

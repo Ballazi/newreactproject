@@ -10,7 +10,6 @@ import pic from "../../asset/pic.png";
 import { styled } from "@mui/material/styles";
 import apiUrl from "../../api/api.json";
 import Notification from '../../Notification';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -22,7 +21,7 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import IconButton from '@mui/material/IconButton';
-import ShareIcon from '@mui/icons-material/Share';
+// import ShareIcon from '@mui/icons-material/Share';
 
 // const theme = createTheme({
 //     overrides: {
@@ -60,10 +59,8 @@ const ContentPage = (props) => {
         setOpneNotification(false);
         setObj({ type: "", message: "" });
     }
-    const [like, setLike] = useState(false);
+    const [liked, setLiked] = useState(false);
     const [unLike, setUnLike] = useState(false);
-    const [followData, setFollowData] = useState([]);
-    const [followStatusData, setFollowStatusData] = useState([]);
     const [follow, setFollow] = useState(false);
 
 
@@ -71,6 +68,7 @@ const ContentPage = (props) => {
     useEffect(() => {
         blogDetailController();
         followCheckController();
+        likeCheckController();
     }, [])
 
 
@@ -86,8 +84,8 @@ const ContentPage = (props) => {
         )
             .then(res => {
                 if (res.data.success) {
-                    setObj({ type: "success", message: res.data.message });
-                    setOpneNotification(true);
+                    // setObj({ type: "success", message: res.data.message });
+                    // setOpneNotification(true);
                     setBlogObject(...res.data.data);
                 }
                 else {
@@ -104,9 +102,154 @@ const ContentPage = (props) => {
             })
     }
 
-    const likeController = () => {
-
+    const likeCheckController = () => {
+        setOpen(true);
+        setOpen(true);
+        axios.post(
+            apiUrl.likeStatus,
+            {
+                "user_id": currentUserId,
+                "blog_id": data.state[0].blogId
+            },
+            {
+                headers: {
+                    "Authorization": token
+                }
+            }
+        )
+            .then(res => {
+                // console.log("data...!",res.data);
+                if (res.data.success) {
+                    if (res.data.likedData !== null) {
+                        if(res.data.unLikedData === null)
+                        {
+                            setUnLike(false);
+                            setLiked(true);
+                        }
+                        else{
+                            setUnLike(false);
+                            setLiked(false);
+                        }
+                    }
+                    else if (res.data.likedData === null) {
+                        if(res.data.unLikedData !== null)
+                        {
+                            setUnLike(true);
+                            setLiked(false);
+                        }
+                        else{
+                            setUnLike(false);
+                            setLiked(false);
+                        }
+                    }
+                    else if (res.data.unLikedData !== null) {
+                        if(res.data.likedData === null)
+                        {
+                            setLiked(false);
+                            setUnLike(true);
+                        }
+                        else{
+                            setUnLike(false);
+                            setLiked(false);
+                        }
+                    }
+                    else if (res.data.unLikedData === null) {
+                        if(res.data.likedData !== null)
+                        {
+                            setLiked(true);
+                            setUnLike(false);
+                        }
+                        else{
+                            setUnLike(false);
+                            setLiked(false);
+                        }
+                    }
+                }
+                else {
+                    setObj({ type: "warning", message: res.data.message });
+                    setOpneNotification(true);
+                }
+            })
+            .catch(error => {
+                setObj({ type: "warning", message: error.response.data.message });
+                setOpneNotification(true);
+            })
+            .finally(() => {
+                setOpen(false);
+            })
     }
+
+
+    const likeController = () => {
+        setOpen(true);
+        axios.post(
+            apiUrl.like,
+            {
+                "user_id": currentUserId,
+                "blog_id": data.state[0].blogId
+            },
+            {
+                headers: {
+                    "Authorization": token
+                }
+            }
+        )
+            .then(res => {
+                if (res.data.success) {
+                    // setObj({ type: "success", message: res.data.message });
+                    // setOpneNotification(true);
+                    // console.log(res.data.message);
+                    likeCheckController();
+                    blogDetailController();
+                }
+                else {
+                    setObj({ type: "warning", message: res.data.message });
+                    setOpneNotification(true);
+                }
+            })
+            .catch(error => {
+                setObj({ type: "warning", message: error.response.data.message });
+                setOpneNotification(true);
+            })
+            .finally(() => {
+                setOpen(false);
+            })
+    }
+
+    const unLikeController = () => {
+        setOpen(true);
+        axios.post(
+            apiUrl.unLike,
+            {
+                "user_id": currentUserId,
+                "blog_id": data.state[0].blogId
+            },
+            {
+                headers: {
+                    "Authorization": token
+                }
+            }
+        )
+            .then(res => {
+                if (res.data.success) {
+                    // console.log(res.data.message);
+                    likeCheckController();
+                    blogDetailController();
+                }
+                else {
+                    setObj({ type: "warning", message: res.data.message });
+                    setOpneNotification(true);
+                }
+            })
+            .catch(error => {
+                setObj({ type: "warning", message: error.response.data.message });
+                setOpneNotification(true);
+            })
+            .finally(() => {
+                setOpen(false);
+            })
+    }
+
 
     const followCheckController = () => {
         setOpen(true);
@@ -127,8 +270,7 @@ const ContentPage = (props) => {
                     if (res.data.data !== null) {
                         setFollow(true);
                     }
-                    else if(res.data.data === null)
-                    {
+                    else if (res.data.data === null) {
                         setFollow(false);
                     }
                 }
@@ -163,7 +305,7 @@ const ContentPage = (props) => {
         )
             .then(res => {
                 if (res.data.success) {
-                    console.log(res.data.message);
+                    // console.log(res.data.message);
                     followCheckController();
                 }
                 else {
@@ -227,7 +369,7 @@ const ContentPage = (props) => {
                         <CardActions >
                             <IconButton aria-label="add to favorites" title='Like'>
                                 {
-                                    like ? <ThumbUpAltIcon onClick={() => likeController(props.ele.blog_id)} /> : <ThumbUpOffAltIcon onClick={() => likeController(props.ele.blog_id)} />
+                                    liked ? <ThumbUpAltIcon sx={{color:"green"}} onClick={() => likeController()} /> : <ThumbUpOffAltIcon sx={{color:"green"}} onClick={() => likeController()} />
                                 }
                             </IconButton>
                             {
@@ -235,11 +377,11 @@ const ContentPage = (props) => {
                             }
                             <IconButton aria-label="add to favorites" title='Unlike'>
                                 {
-                                    unLike ? <ThumbDownAltIcon onClick={() => { setUnLike(!unLike) }} /> : <ThumbDownOffAltIcon onClick={() => { setUnLike(!unLike) }} />
+                                    unLike ? <ThumbDownAltIcon sx={{color:"green"}} onClick={() => unLikeController()} /> : <ThumbDownOffAltIcon sx={{color:"green"}} onClick={() => unLikeController()} />
                                 }
                             </IconButton>
                             {
-                                0
+                                blogObject.unlike
                             }
                             {/* <IconButton aria-label="share" edge="end">
                         <ShareIcon />
@@ -264,11 +406,12 @@ const ContentPage = (props) => {
                                 </Grid>
                                 <Grid item>
                                     {
+                                        data.state[1].bloggerId !== currentUserId ?
                                         !follow ?
                                             <Button
                                                 size='small'
-                                                variant='contained'
-                                                sx={{ bgcolor: "black" }}
+                                                variant='outlined'
+                                                sx={{ color:"black" }}
                                                 onClick={() => followController(blogObject.bloggerId)}
                                             >
                                                 FOLLOW
@@ -281,7 +424,7 @@ const ContentPage = (props) => {
                                                 onClick={() => followController(blogObject.bloggerId)}
                                             >
                                                 FOLLOWING
-                                            </Button>
+                                            </Button> : ""
                                     }
                                 </Grid>
                             </Grid>
