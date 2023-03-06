@@ -10,6 +10,8 @@ import pic from "../../asset/pic.png";
 import { styled } from "@mui/material/styles";
 import apiUrl from "../../api/api.json";
 import Notification from '../../Notification';
+import { Link, NavLink } from 'react-router-dom';
+import { style } from '@mui/system';
 
 
 const Wrapper = styled(Grid)(({ theme }) => ({
@@ -117,7 +119,7 @@ const Profile = () => {
                 sx={{
                   height: "450px",
                   width: '100%',
-                  objectFit:"contain"
+                  objectFit: "contain"
                 }}
               />
             </Grid>
@@ -129,14 +131,18 @@ const Profile = () => {
                   </CustomTypography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <CustomTypography2 variant='h6' fontWeight={"600"}>
-                    Followers : {profileObject.follow}
-                  </CustomTypography2>
+                  <Link to={"/user/followres"} style={{textDecoration:"none"}}>
+                    <CustomTypography2 variant='h6' fontWeight={"600"}>
+                      Followers : {profileObject.follow}
+                    </CustomTypography2>
+                  </Link>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <CustomTypography2 variant='h6' fontWeight={"600"}>
-                    Following : {profileObject.following}
-                  </CustomTypography2>
+                  <NavLink to={"/user/following"} style={{textDecoration:"none"}}>
+                    <CustomTypography2 variant='h6' fontWeight={"600"}>
+                      Following : {profileObject.following}
+                    </CustomTypography2>
+                  </NavLink>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                   <CustomTypography2 variant='h6' fontWeight={"600"}>

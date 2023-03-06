@@ -1,118 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import ShareIcon from '@mui/icons-material/Share';
 import moment from 'moment/moment';
-import apiUrl from "../../api/api.json";
-import axios from 'axios';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Notification from '../../Notification';
 import { NavLink } from "react-router-dom";
 
 
 export default function RecipeReviewCard(props) {
-    const [like, setLike] = useState(false);
-    const [unLike, setUnLike] = useState(false);
-    const [follow, setFollow] = useState(false);
-    const currentUserId = localStorage.getItem("currentUserId");
-    const token = localStorage.getItem("token");
-    const [open, setOpen] = useState(false);
-    const [obj, setObj] = useState({
-        type: "",
-        message: ""
-    });
-    const [opneNotification, setOpneNotification] = useState(false);
-    const setNotification = () => {
-        setOpneNotification(false);
-        setObj({ type: "", message: "" });
-    }
-
-
-    const followController = (id) => {
-        setOpen(true);
-        axios.post(
-            apiUrl.follow,
-            {
-                "user_id": currentUserId,
-                "bloger_id": id
-            },
-            {
-                headers: {
-                    "Authorization": token
-                }
-            }
-        )
-            .then(res => {
-                if (res.data.success) {
-                    setFollow(!follow);
-                }
-                else {
-                    setObj({ type: "warning", message: res.data.message });
-                    setOpneNotification(true);
-                }
-            })
-            .catch(error => {
-                setObj({ type: "warning", message: error.response.data.message });
-                setOpneNotification(true);
-            })
-            .finally(() => {
-                setOpen(false);
-            })
-    }
-
-    const likeController = (id) => {
-        setOpen(true);
-        axios.post(
-            apiUrl.like,
-            {
-                "user_id": currentUserId,
-                "blog_id": id
-            },
-            {
-                headers: {
-                    "Authorization": token
-                }
-            }
-        )
-            .then(res => {
-                if (res.data.success) {
-                    setFollow(!follow);
-                }
-                else {
-                    setObj({ type: "warning", message: res.data.message });
-                    setOpneNotification(true);
-                }
-            })
-            .catch(error => {
-                setObj({ type: "warning", message: error.response.data.message });
-                setOpneNotification(true);
-            })
-            .finally(() => {
-                setOpen(false);
-            })
-    }
-
 
 
     return (
         <>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={open}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-
-            {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
-
             <NavLink to={`/${props.type}/${props.ele.title}`} state={[{blogId:props.ele.blog_id},{bloggerId:props.ele.bloggerId}]} style={{ textDecoration: "none" }}>
                 <Card sx={{ maxWidth: "100%", height: "350px" }}>
                     <CardHeader
