@@ -42,6 +42,7 @@ const CustomTypography2 = styled(Typography)(({ theme }) => ({
 const Profile = () => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("currentUserId");
+  const stateValue = {follower_id : userId};
   const navigate = useNavigate();
   const [profileObject, setProfileObject] = useState({});
   const [open, setOpen] = useState(false);
@@ -131,23 +132,25 @@ const Profile = () => {
                   </CustomTypography>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <Link to={"/user/followres"} style={{textDecoration:"none"}}>
+                  <Link to={"/user/followres"} style={{ textDecoration: "none" }}>
                     <CustomTypography2 variant='h6' fontWeight={"600"}>
                       Followers : {profileObject.follow}
                     </CustomTypography2>
                   </Link>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <NavLink to={"/user/following"} style={{textDecoration:"none"}}>
+                  <NavLink to={"/user/following"} style={{ textDecoration: "none" }}>
                     <CustomTypography2 variant='h6' fontWeight={"600"}>
                       Following : {profileObject.following}
                     </CustomTypography2>
                   </NavLink>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <CustomTypography2 variant='h6' fontWeight={"600"}>
-                    Total Blogs : {profileObject.total_blogs}
-                  </CustomTypography2>
+                  <NavLink to={"/Profile/details"} style={{textDecoration:"none"}} state={stateValue}>
+                    <CustomTypography2 variant='h6' fontWeight={"600"}>
+                      Total Blogs : {profileObject.total_blogs}
+                    </CustomTypography2>
+                  </NavLink>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
                   <Button

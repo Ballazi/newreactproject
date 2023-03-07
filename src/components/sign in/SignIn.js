@@ -39,7 +39,7 @@ const SignUp = () => {
       )
         .then(res => {
           if (res.data.success) {
-            console.log("datas...!", res.data.data);
+            // console.log("datas...!", res.data.data);
             localStorage.setItem("login", true);
             localStorage.setItem("token", res.data.data.token);
             localStorage.setItem("currentUserId", res.data.data.currentUser.id);
@@ -55,7 +55,7 @@ const SignUp = () => {
           }
         })
         .catch(error => {
-          console.log("catch block", error.response);
+          // console.log("catch block", error.response);
           if (error.response.status === 400) {
             setObj({ type: "warning", message: error.response.data.message });
             setOpneNotification(true);

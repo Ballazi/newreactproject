@@ -10,6 +10,7 @@ import { red } from '@mui/material/colors';
 import moment from 'moment/moment';
 import { NavLink } from "react-router-dom";
 import IconButton from '@mui/material/IconButton';
+import pic from "../../asset/pic.png";
 
 
 export default function Follower(props) {
@@ -19,22 +20,30 @@ export default function Follower(props) {
     return (
         <>
             <NavLink to={"/user/details"} state={props.ele} style={{ textDecoration: "none" }}>
-            <Card sx={{ maxWidth: "100%", height: "260px" }}>
-                <CardMedia
-                    component="img"
-                    height="194"
-                    image={props.ele.followerPic}
-                    alt="Paella dish"
-                />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary" fontWeight={600}>
-                        {props.ele.followerName}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" fontWeight={600}>
-                        Total Blogs : {props.ele.followerTotlaBlogs}
-                    </Typography>
-                </CardContent>
-                {/* <CardActions >
+                <Card sx={{
+                    maxWidth: "100%",
+                    height: "260px",
+                    transition:"200ms",
+                    '&:hover': {
+                        transform : "Scale(1.01)"
+                    },
+                }}
+                >
+                    <CardMedia
+                        component="img"
+                        height="194"
+                        image={props.ele.followerPic === "" ? pic : props.ele.followerPic}
+                        alt="Paella dish"
+                    />
+                    <CardContent>
+                        <Typography variant="body2" color="text.secondary" fontWeight={600}>
+                            {props.ele.followerName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" fontWeight={600}>
+                            Total Blogs : {props.ele.followerTotlaBlogs}
+                        </Typography>
+                    </CardContent>
+                    {/* <CardActions >
                     <IconButton aria-label="add to favorites" title='Like'>
                         Following : 
                     </IconButton>
@@ -51,7 +60,7 @@ export default function Follower(props) {
                         <ShareIcon />
                     </IconButton>
                 </CardActions> */}
-            </Card>
+                </Card>
             </NavLink>
         </>
     );
