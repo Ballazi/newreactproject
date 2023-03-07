@@ -58,6 +58,7 @@ const UserDetails = () => {
     }
 
     const locationData = useLocation();
+    console.log("location Data...!", locationData);
     const [follow, setFollow] = useState(false);
     const [profileObject, setProfileObject] = useState({})
 
@@ -83,7 +84,7 @@ const UserDetails = () => {
                     setObj({ type: "success", message: res.data.message });
                     setOpneNotification(true);
                     setProfileObject(res.data.data);
-                    console.log("profile Data",res.data.data);
+                    // console.log("profile Data",res.data.data);
                 }
                 else {
                     setObj({ type: "warning", message: res.data.message });
@@ -100,7 +101,7 @@ const UserDetails = () => {
     }
 
 
-    const userBlogsController = (id) => {
+    const userBlogsController = () => {
         setOpen(true);
         axios.get(
             apiUrl.userBlogs + locationData.state.follower_id,
@@ -115,7 +116,7 @@ const UserDetails = () => {
                     // setObj({ type: "success", message: res.data.message });
                     // setOpneNotification(true);
                     setItems(res.data.data);
-                    console.log("data", res.data.data);
+                    // console.log("data", res.data.data);
                 }
                 else {
                     setObj({ type: "warning", message: res.data.message });
@@ -253,13 +254,13 @@ const UserDetails = () => {
                                     </CustomTypography2>
                                     {/* </NavLink> */}
                                 </Grid>
-                                <Grid item xs={12} sm={12} md={12}>
+                                {/* <Grid item xs={12} sm={12} md={12}>
                                     <CustomTypography2 variant='h6' fontWeight={"600"}>
                                         Total Blogs : {profileObject.total_blogs}
                                     </CustomTypography2>
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12} sm={12} md={12}>
-                                    {
+                                    {locationData.state.follower_id !== currentUserId ?
                                         !follow ?
                                             <Button
                                                 size='small'
@@ -278,6 +279,7 @@ const UserDetails = () => {
                                             >
                                                 FOLLOWING
                                             </Button>
+                                        : ""
                                     }
                                 </Grid>
                             </Grid>
@@ -287,7 +289,7 @@ const UserDetails = () => {
             </Grid>
             <Grid sx={{ my: "20px" }}>
                 <CustomTypography variant='h6' fontWeight={"600"}>
-                    {locationData.state.followerName} All Blogs
+                    All Blogs Of {locationData.state.followerName}
                 </CustomTypography>
             </Grid>
             <Grid container spacing={2}>

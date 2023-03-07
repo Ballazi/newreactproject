@@ -21,6 +21,7 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
 // import ShareIcon from '@mui/icons-material/Share';
 
 // const theme = createTheme({
@@ -46,7 +47,6 @@ const ContentPage = (props) => {
     const data = useLocation();
     const token = localStorage.getItem("token");
     const currentUserId = localStorage.getItem("currentUserId");
-    const userId = localStorage.getItem("currentUserId");
     const navigate = useNavigate();
     const [blogObject, setBlogObject] = useState({});
     const [open, setOpen] = useState(false);
@@ -121,45 +121,41 @@ const ContentPage = (props) => {
                 // console.log("data...!",res.data);
                 if (res.data.success) {
                     if (res.data.likedData !== null) {
-                        if(res.data.unLikedData === null)
-                        {
+                        if (res.data.unLikedData === null) {
                             setUnLike(false);
                             setLiked(true);
                         }
-                        else{
+                        else {
                             setUnLike(false);
                             setLiked(false);
                         }
                     }
                     else if (res.data.likedData === null) {
-                        if(res.data.unLikedData !== null)
-                        {
+                        if (res.data.unLikedData !== null) {
                             setUnLike(true);
                             setLiked(false);
                         }
-                        else{
+                        else {
                             setUnLike(false);
                             setLiked(false);
                         }
                     }
                     else if (res.data.unLikedData !== null) {
-                        if(res.data.likedData === null)
-                        {
+                        if (res.data.likedData === null) {
                             setLiked(false);
                             setUnLike(true);
                         }
-                        else{
+                        else {
                             setUnLike(false);
                             setLiked(false);
                         }
                     }
                     else if (res.data.unLikedData === null) {
-                        if(res.data.likedData !== null)
-                        {
+                        if (res.data.likedData !== null) {
                             setLiked(true);
                             setUnLike(false);
                         }
-                        else{
+                        else {
                             setUnLike(false);
                             setLiked(false);
                         }
@@ -322,6 +318,37 @@ const ContentPage = (props) => {
             })
     }
 
+    const deleteController = (deleteBlog) => {
+        setOpen(true);
+        axios.delete(
+            apiUrl.deleteBlog + blogObject.bloggerId + "/" + blogObject.blog_id ,
+            {
+                headers: {
+                    "Authorization": token
+                }
+            }
+        )
+            .then(res => {
+                if (res.data.success) {
+                    setObj({ type: "warning", message: res.data.message });
+                    setOpneNotification(true);
+                    setTimeout(() => {navigate(`/${blogObject.blog_type}`)},1000);
+                    // navigate(`/${blogObject.blog_type}`);
+                }
+                else {
+                    setObj({ type: "warning", message: res.data.message });
+                    setOpneNotification(true);
+                }
+            })
+            .catch(error => {
+                setObj({ type: "warning", message: error.response.data.message });
+                setOpneNotification(true);
+            })
+            .finally(() => {
+                setOpen(false);
+            })
+    }
+
 
     return (
         <>
@@ -367,25 +394,37 @@ const ContentPage = (props) => {
                         </CardContent>
                         <hr />
                         <CardActions >
-                            <IconButton aria-label="add to favorites" title='Like'>
-                                {
-                                    liked ? <ThumbUpAltIcon sx={{color:"green"}} onClick={() => likeController()} /> : <ThumbUpOffAltIcon sx={{color:"green"}} onClick={() => likeController()} />
-                                }
-                            </IconButton>
-                            {
-                                blogObject.likes
-                            }
-                            <IconButton aria-label="add to favorites" title='Unlike'>
-                                {
-                                    unLike ? <ThumbDownAltIcon sx={{color:"green"}} onClick={() => unLikeController()} /> : <ThumbDownOffAltIcon sx={{color:"green"}} onClick={() => unLikeController()} />
-                                }
-                            </IconButton>
-                            {
-                                blogObject.unlike
-                            }
-                            {/* <IconButton aria-label="share" edge="end">
-                        <ShareIcon />
-                    </IconButton> */}
+                            <Grid container justifyContent="space-between" alignItems={"center"}>
+                                <Grid item>
+                                    {/* <Grid container spacing={2}> */}
+                                    <IconButton aria-label="add to favorites" title='Like'>
+                                        {
+                                            liked ? <ThumbUpAltIcon sx={{ color: "green" }} onClick={() => likeController()} /> : <ThumbUpOffAltIcon sx={{ color: "green" }} onClick={() => likeController()} />
+                                        }
+                                    </IconButton>
+                                    {
+                                        blogObject.likes
+                                    }
+                                    <IconButton aria-label="add to favorites" title='Unlike'>
+                                        {
+                                            unLike ? <ThumbDownAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} /> : <ThumbDownOffAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} />
+                                        }
+                                    </IconButton>
+                                    {
+                                        blogObject.unlike
+                                    }
+                                    {/* </Grid> */}
+                                </Grid>
+                                <Grid item>
+                                    {
+                                        currentUserId === blogObject.bloggerId ?
+                                            <IconButton aria-label="settings">
+                                                <ClearIcon onClick={() => deleteController()} />
+                                            </IconButton>
+                                            : ""
+                                    }
+                                </Grid>
+                            </Grid>
                         </CardActions>
                     </Card>
                 </Grid>
@@ -407,24 +446,24 @@ const ContentPage = (props) => {
                                 <Grid item>
                                     {
                                         data.state[1].bloggerId !== currentUserId ?
-                                        !follow ?
-                                            <Button
-                                                size='small'
-                                                variant='outlined'
-                                                sx={{ color:"black" }}
-                                                onClick={() => followController(blogObject.bloggerId)}
-                                            >
-                                                FOLLOW
-                                            </Button>
-                                            :
-                                            <Button
-                                                size='small'
-                                                variant='contained'
-                                                sx={{ bgcolor: "green" }}
-                                                onClick={() => followController(blogObject.bloggerId)}
-                                            >
-                                                FOLLOWING
-                                            </Button> : ""
+                                            !follow ?
+                                                <Button
+                                                    size='small'
+                                                    variant='outlined'
+                                                    sx={{ color: "black" }}
+                                                    onClick={() => followController(blogObject.bloggerId)}
+                                                >
+                                                    FOLLOW
+                                                </Button>
+                                                :
+                                                <Button
+                                                    size='small'
+                                                    variant='contained'
+                                                    sx={{ bgcolor: "green" }}
+                                                    onClick={() => followController(blogObject.bloggerId)}
+                                                >
+                                                    FOLLOWING
+                                                </Button> : ""
                                     }
                                 </Grid>
                             </Grid>

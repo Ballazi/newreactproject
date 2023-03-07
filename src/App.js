@@ -71,6 +71,7 @@ function App() {
             <Route exact path='/Food' element={<Food />} />
             <Route exact path='/Entertainment' element={<Entertainment />} />
             <Route exact path='/Profile' element={<Profile />} />
+            <Route exact path='/Profile/details' element={<UserDetails />} />
             <Route exact path='/Signin' element={<SignIn />} />
             <Route exact path='/Signup' element={<SignUp />} />
             <Route exact path="/appBlog" element={<AddBlogs />} />

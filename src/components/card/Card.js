@@ -11,13 +11,21 @@ import moment from 'moment/moment';
 import { NavLink } from "react-router-dom";
 
 
-export default function RecipeReviewCard(props) {
 
+export default function RecipeReviewCard(props) {
 
     return (
         <>
-            <NavLink to={`/${props.type}/${props.ele.title}`} state={[{blogId:props.ele.blog_id},{bloggerId:props.ele.bloggerId}]} style={{ textDecoration: "none" }}>
-                <Card sx={{ maxWidth: "100%", height: "350px" }}>
+            <NavLink to={`/${props.type}/${props.ele.title}`} state={[{ blogId: props.ele.blog_id }, { bloggerId: props.ele.bloggerId }]} style={{ textDecoration: "none" }}>
+                <Card sx={{
+                    maxWidth: "100%",
+                    height: "350px",
+                    transition: "200ms",
+                    '&:hover': {
+                        transform: "Scale(1.01)"
+                    },
+                }}
+                >
                     <CardHeader
                         avatar={
                             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

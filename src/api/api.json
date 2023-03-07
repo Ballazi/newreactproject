@@ -15,5 +15,6 @@
     "unLikeStatus" : "http://localhost:8000/api/blog/unLikeStatus",
     "allFollowers" : "http://localhost:8000/api/user/follow/",
     "allFollowings" : "http://localhost:8000/api/user/following/",
-    "userBlogs" : "http://localhost:8000/api/blog/userBlogs/"
+    "userBlogs" : "http://localhost:8000/api/blog/userBlogs/",
+    "deleteBlog" : "http://localhost:8000/api/blog/deleteBlogs/"
 }
