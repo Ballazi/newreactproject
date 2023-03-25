@@ -4,25 +4,37 @@ import io from 'socket.io-client';
 import ApiUrl from "../../api/api.json"
 import Chat from './Chat';
 
-const socket = io(ApiUrl.service);
+
 
 const ChatRoom = () => {
-    const [userName, setUserName] = useState("");
     const [room, setRoom] = useState("");
     const [showChat, setShowChat] = useState(false);
+    const currentUserId = localStorage.getItem("currentUserId");
 
-    useEffect(() => {
-        socket.on("join_response", (data) => {
-            if (data) {
-                setShowChat(true);
-            }
-        })
-    }, [])
+    const socket = io(ApiUrl.service);
+
+    // useEffect(() => {
+    //     socket.on("join_response", (data) => {
+    //         if (data) {
+    //             setShowChat(true);
+    //         }
+    //     })
+    // }, [])
 
 
     const joinRoom = () => {
-        if (userName !== "" || room !== "") {
-            socket.emit("join_room", room);
+        if (room !== "") {
+            const joiningData = {
+                currentUserId,
+                room
+            }
+            socket.emit("join_room", joiningData);
+            socket.on("join_response", (data) => {
+                console.log("data",data);
+                if (data) {
+                    setShowChat(true);
+                }
+            })
         }
     }
 
@@ -32,16 +44,6 @@ const ChatRoom = () => {
             {!showChat ? (
                 <Grid container spacing={2} sx={{ width: "30%", margin: "8% auto" }}>
                     <Grid item xs={12} sm={12} md={12}><h3>Join a chat</h3></Grid>
-                    <Grid item xs={12} sm={12} md={12}>
-                        <TextField
-                            variant='outlined'
-                            label="join..."
-                            size='small'
-                            fullWidth
-                            value={userName}
-                            onChange={e => setUserName(e.target.value)}
-                        />
-                    </Grid>
                     <Grid item xs={12} sm={12} md={12}>
                         <TextField
                             variant='outlined'
@@ -63,7 +65,7 @@ const ChatRoom = () => {
                     </Grid>
                 </Grid>
             ) : (
-                <Chat socket={socket} userName={userName} room={room} />
+                <Chat socket={socket} room={room} />
             )}
         </>
     )

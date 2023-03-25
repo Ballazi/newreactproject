@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Button, TextField } from '@mui/material';
 import moment from 'moment';
 
-const Chat = ({ socket, userName, room }) => {
+const Chat = ({ socket, room }) => {
     const [messageData, setMessageData] = useState("");
     const [messageList, setMessageList] = useState([]);
+    const currentUserId = localStorage.getItem("currentUserId");
 
-    useEffect(() => {
-        socket.on("message_recive", data => {
-            setMessageList(currentList => [...currentList, data]);
-        })
-    }, [])
+    // useEffect(() => {
+    //     socket.on("message_recive", data => {
+    //         setMessageList(currentList => [...currentList, data]);
+    //     })
+    // }, [])
 
 
     const messageHandler = () => {
         if (messageData !== null) {
             const obj = {
-                room: room,
-                author: userName,
+                room,
+                currentUserId,
                 message: messageData,
                 time: moment(new Date()).format("HH:MM")
             }
             socket.emit("message_sent", obj);
+            socket.on("message_recive", data => {
+                console.log("msg data",data);
+                setMessageList(currentList => [...currentList, data]);
+            })
         }
     }
 

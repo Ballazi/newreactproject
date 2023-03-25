@@ -25,6 +25,7 @@ const Wrapper = styled(Paper)(({ theme }) => ({
   width: "80%",
   marginTop:"2%",
   marginBottom:"5%",
+  backgroundColor: "rgb(249, 249, 249)",
   [theme.breakpoints.down("md")]: {
     marginTop:"4%",
     marginBottom:"9%",
