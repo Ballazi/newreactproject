@@ -1,0 +1,279 @@
+// In the client-side JavaScript code
+const sessionID = <generate a unique session ID>;
+
+const socket = io({
+  query: {
+    sessionID
+  }
+});
+
+// ...
+
+
+
+
+// In the server-side JavaScript code
+const io = require('socket.io')(server);
+
+io.on('connection', (socket) => {
+  const sessionID = socket.handshake.query.sessionID;
+
+  // Join the socket to a room identified by the session ID
+  socket.join(sessionID);
+
+  socket.on('chat message', (msg) => {
+    // Send the message only to clients in the same room
+    io.to(sessionID).emit('chat message', msg);
+  });
+});
+
+
+
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+const PORT = 3000;
+
+const clients = {};
+
+io.on('connection', (socket) => {
+  console.log(`Client ${socket.id} connected`);
+
+  socket.on('join', (room) => {
+    socket.join(room);
+    console.log(`Client ${socket.id} joined room ${room}`);
+  });
+
+  socket.on('message', (message) => {
+    console.log(`Client ${socket.id} sent message: ${message}`);
+
+    // Get the list of clients in the same room as the sender
+    const room = Object.keys(socket.rooms)[1]; // Assumes that the first room is the client's own room
+    const clientSockets = io.sockets.adapter.rooms.get(room);
+
+    // Broadcast the message to all clients in the same room
+    for (const clientId of clientSockets) {
+      if (clientId !== socket.id) {
+        io.to(clientId).emit('message', message);
+      }
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`Client ${socket.id} disconnected`);
+
+    // Remove the client from the list of clients
+    delete clients[socket.id];
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+
+
+
+
+
+const io = require('socket.io')(server, {
+    cors: {
+        // methods: ["GET", "POST"]
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('A user connected...!', socket.id);
+
+    socket.on("join_room", (data) => {
+        console.log("join data",data);
+        socket.join(data.room);
+        console.log(`User with ID: ${socket.id} joined room: ${data.room}`);
+        socket.emit("join_response", true);
+    })
+
+    socket.on("message_sent", data => {
+        console.log("message Data is :",data);
+        socket.broadcast.to(data.room).emit("message_recive", data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected', socket.id);
+    });
+});
+
+
+
+
+
+
+
+
+import { TextField, Button, Grid } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+import ApiUrl from "../../api/api.json"
+import Chat from './Chat';
+
+import React, { useState, useEffect } from 'react';
+import { Grid, Typography, Button, TextField } from '@mui/material';
+import io from 'socket.io-client';
+import moment from 'moment';
+import ApiUrl from "../../api/api.json"
+import Chat from './Chat';
+
+const ChatRoom = () => {
+    const [room, setRoom] = useState("");
+    const [showChat, setShowChat] = useState(false);
+    const [socket, setSocket] = useState(null);
+    const currentUserId = localStorage.getItem("currentUserId");
+
+    useEffect(() => {
+        const socketInstance = io(ApiUrl.service);
+        setSocket(socketInstance);
+        return () => {
+            socketInstance.disconnect();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on("join_response", (data) => {
+                console.log("data",data);
+                if (data) {
+                    setShowChat(true);
+                }
+            });
+        }
+    }, [socket]);
+
+    const joinRoom = () => {
+        if (room !== "") {
+            const joiningData = {
+                currentUserId,
+                room
+            };
+            socket.emit("join_room", joiningData);
+        }
+    };
+
+    return (
+        <>
+            {!showChat ? (
+                <Grid container spacing={2} sx={{ width: "30%", margin: "8% auto" }}>
+                    <Grid item xs={12} sm={12} md={12}><h3>Join a chat</h3></Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <TextField
+                            variant='outlined'
+                            label="Room Id"
+                            size='small'
+                            fullWidth
+                            value={room}
+                            onChange={e => setRoom(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                        <Button
+                            variant='contained'
+                            size='small'
+                            onClick={() => joinRoom()}
+                        >
+                            Join A Room
+                        </Button>
+                    </Grid>
+                </Grid>
+            ) : (
+                <Chat socket={socket} room={room} />
+            )}
+        </>
+    )
+}
+
+export default ChatRoom;
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
+import { Grid, Typography, Button, TextField } from '@mui/material';
+import moment from 'moment';
+
+const Chat = ({ socket, room }) => {
+  const [messageData, setMessageData] = useState('');
+  const [messageList, setMessageList] = useState([]);
+  const currentUserId = localStorage.getItem('currentUserId');
+
+  useEffect(() => {
+    socket.on('message_recive', (data) => {
+      setMessageList((currentList) => [...currentList, data]);
+    });
+    return () => {
+      socket.off('message_recive');
+    };
+  }, [socket]);
+
+  const messageHandler = () => {
+    if (messageData.trim() !== '') {
+      const obj = {
+        room,
+        currentUserId,
+        message: messageData,
+        time: moment(new Date()).format('HH:MM'),
+      };
+      socket.emit('message_sent', obj);
+      setMessageData('');
+    }
+  };
+
+  return (
+    <Grid container spacing={2} sx={{ width: '30%', margin: '8% auto' }}>
+      <Grid item xs={12} sm={12} md={12}>
+        <Typography>Live chat</Typography>
+      </Grid>
+      <Grid item xs={12} sm={12} md={12}>
+        {messageList.length !== 0 ? (
+          messageList.map((ele, ind) => {
+            return (
+              <Typography variant="h5" key={ind}>
+                {ele.message}
+              </Typography>
+            );
+          })
+        ) : (
+          <Typography variant="h6">No messages yet</Typography>
+        )}
+      </Grid>
+      <Grid item>
+        <Grid container direction={'row'}>
+          <Grid item>
+            <TextField
+              placeholder="Hey..."
+              size="small"
+              fullWidth
+              value={messageData}
+              onChange={(e) => setMessageData(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  messageHandler();
+                }
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Button variant="contained" size="medium" onClick={() => messageHandler()}>
+              &#9658;
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default Chat;
