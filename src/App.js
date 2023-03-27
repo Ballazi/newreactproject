@@ -17,12 +17,15 @@ import ContentPage from './components/content page/ContentPage';
 import Followers from './components/follow page/Followers';
 import Followings from './components/follow page/Followings';
 import UserDetails from './components/user detail/UserDetails';
+import Messenger from './components/messenger/Messenger';
+import ChatRoom from './components/messenger/ChatRoom';
 
 const Wrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
   width: "80%",
   marginTop:"2%",
   marginBottom:"5%",
+  backgroundColor: "rgb(249, 249, 249)",
   [theme.breakpoints.down("md")]: {
     marginTop:"4%",
     marginBottom:"9%",
@@ -79,6 +82,8 @@ function App() {
             <Route exact path="/user/followres" element={<Followers />} />
             <Route exact path="/user/following" element={<Followings />} />
             <Route exact path="/user/details" element={<UserDetails />} />
+            {/* <Route exact path="/messenger" element={<Messenger />} /> */}
+            <Route exact path="/messenger" element={<ChatRoom />} />
           </Routes>
         </Wrapper>
       </Grid>
