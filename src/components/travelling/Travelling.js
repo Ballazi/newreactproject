@@ -77,7 +77,7 @@ const Travelling = () => {
                         items.length === 0 && open === false ? "Oops...! There is no any blogs in Travelling category" :
                         items.map(ele => {
                             return (
-                                <Grid item xs={12} sm={6} md={4}>
+                                <Grid item xs={12} sm={6} md={4} key={ele.blog_id}>
                                     <RecipeReviewCard ele = {ele} type="Travelling" />
                                 </Grid>
                             )

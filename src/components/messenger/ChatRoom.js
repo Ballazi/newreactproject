@@ -1,43 +1,47 @@
-import { TextField, Button, Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-import ApiUrl from "../../api/api.json"
+import { Grid, Button, TextField } from '@mui/material';
+// import io from 'socket.io-client';
+// import moment from 'moment';
+// import ApiUrl from "../../api/api.json"
 import Chat from './Chat';
 
-
-
-const ChatRoom = () => {
+const ChatRoom = ({socket}) => {
     const [room, setRoom] = useState("");
     const [showChat, setShowChat] = useState(false);
+    // const [socket, setSocket] = useState(null);
     const currentUserId = localStorage.getItem("currentUserId");
 
-    const socket = io(ApiUrl.service);
-
     // useEffect(() => {
-    //     socket.on("join_response", (data) => {
-    //         if (data) {
-    //             setShowChat(true);
-    //         }
+    //     const socketInstance = io(ApiUrl.service);
+    //     socketInstance.on("connect", () => {
+    //         console.log("user connected: ",socketInstance.id);
     //     })
-    // }, [])
+    //     setSocket(socketInstance);
+    //     return () => {
+    //         socketInstance.disconnect();
+    //     };
+    // }, []);
 
+    useEffect(() => {
+        if (socket) {
+            socket.on("join_response", (data) => {
+                // console.log("data", data);
+                if (data) {
+                    setShowChat(true);
+                }
+            });
+        }
+    }, [socket]);
 
     const joinRoom = () => {
         if (room !== "") {
             const joiningData = {
                 currentUserId,
                 room
-            }
+            };
             socket.emit("join_room", joiningData);
-            socket.on("join_response", (data) => {
-                console.log("data",data);
-                if (data) {
-                    setShowChat(true);
-                }
-            })
         }
-    }
-
+    };
 
     return (
         <>
@@ -71,4 +75,4 @@ const ChatRoom = () => {
     )
 }
 
-export default ChatRoom
+export default ChatRoom;

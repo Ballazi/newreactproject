@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import Nav from "./Nav";
@@ -19,20 +19,22 @@ import Followings from './components/follow page/Followings';
 import UserDetails from './components/user detail/UserDetails';
 import Messenger from './components/messenger/Messenger';
 import ChatRoom from './components/messenger/ChatRoom';
+import ApiUrl from "./api/api.json";
+import io from 'socket.io-client';
 
 const Wrapper = styled(Paper)(({ theme }) => ({
   padding: "10px",
   width: "80%",
-  marginTop:"2%",
-  marginBottom:"5%",
+  marginTop: "2%",
+  marginBottom: "5%",
   backgroundColor: "rgb(249, 249, 249)",
   [theme.breakpoints.down("md")]: {
-    marginTop:"4%",
-    marginBottom:"9%",
+    marginTop: "4%",
+    marginBottom: "9%",
   },
   [theme.breakpoints.down("sm")]: {
-    marginTop:"6%",
-    marginBottom:"15%",
+    marginTop: "6%",
+    marginBottom: "15%",
   },
 }));
 
@@ -42,28 +44,38 @@ function App() {
   const login = localStorage.getItem("login");
   const navigate = useNavigate();
 
+  const [socket, setSocket] = useState(null);
+
   useEffect(() => {
-    if(path === "/" && login === null)
-    {
+    const socketInstance = io(ApiUrl.service);
+    socketInstance.on("connect", () => {
+      console.log("user connected: ", socketInstance.id);
+    })
+    setSocket(socketInstance);
+    return () => {
+      socketInstance.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (path === "/" && login === null) {
       localStorage.clear();
       navigate("/Signin");
     }
-    else if(path === "/" && login === "true")
-    {
+    else if (path === "/" && login === "true") {
       navigate("/Travelling");
     }
     else if (path !== "/" && login === null) {
-      if(path === "/Signup")
-      {
+      if (path === "/Signup") {
         navigate("/Signup")
       }
-      else{
+      else {
         navigate("/Signin");
       }
     }
   }, [path])
-  
-  
+
+
   return (
     <div className="App">
       <Nav />
@@ -83,7 +95,7 @@ function App() {
             <Route exact path="/user/following" element={<Followings />} />
             <Route exact path="/user/details" element={<UserDetails />} />
             {/* <Route exact path="/messenger" element={<Messenger />} /> */}
-            <Route exact path="/messenger" element={<ChatRoom />} />
+            <Route exact path="/messenger" element={<ChatRoom socket={socket} />} />
           </Routes>
         </Wrapper>
       </Grid>

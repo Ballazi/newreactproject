@@ -58,7 +58,7 @@ const UserDetails = () => {
     }
 
     const locationData = useLocation();
-    console.log("location Data...!", locationData);
+    // console.log("location Data...!", locationData);
     const [follow, setFollow] = useState(false);
     const [profileObject, setProfileObject] = useState({})
 

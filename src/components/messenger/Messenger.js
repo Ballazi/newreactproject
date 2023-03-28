@@ -11,7 +11,7 @@ const Messenger = () => {
     useEffect(() => {
         socket.on('message', (msg) => {
             setMessages((prevMessages) => [...prevMessages, msg]);
-            console.log("message...!", msg);
+            // console.log("message...!", msg);
         });
     }, []);
 
