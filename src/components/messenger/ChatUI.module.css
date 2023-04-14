@@ -10,12 +10,12 @@
     overflow-y: scroll;
     padding: 16px;
     height: 400px;
+    scrollbar-width: none;
 }
 
-.chatHistory ::-webkit-scrollbar {
+.chatHistory::-webkit-scrollbar {
     width: 0px;
 }
-
 
 /* ::-webkit-scrollbar': { width: '0px'} */
 
@@ -39,14 +39,16 @@
     background-color: #eee;
     border-radius: 0 8px 8px 8px;
     padding: 8px;
-    display: inline-block; /* add this line */
+    display: inline-block;
+    /* add this line */
 }
 
 .messageContentMe {
     background-color: #91ea38;
     border-radius: 8px 0 8px 8px;
     padding: 8px;
-    display: inline-block; /* add this line */
+    display: inline-block;
+    /* add this line */
 }
 
 .chatForm {

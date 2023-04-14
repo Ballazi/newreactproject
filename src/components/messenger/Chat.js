@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Typography, Button, TextField } from '@mui/material';
 import moment from 'moment';
 import { styled } from "@mui/material/styles";
@@ -25,13 +25,15 @@ const Chat = ({ socket, room }) => {
     const [messageData, setMessageData] = useState('');
     const [messageList, setMessageList] = useState([]);
     const currentUserId = localStorage.getItem('currentUserId');
+    const chatHistoryRef = useRef(null);
+
 
     useEffect(() => {
-        const chatBox = document.querySelector(".chatHistory");
+        const chatBox = chatHistoryRef.current;
         if (chatBox) {
-            chatBox.scrollBy(0, chatBox.scrollHeight);
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-    }, [messageList])
+    }, [messageList]);
 
 
     useEffect(() => {
@@ -64,7 +66,7 @@ const Chat = ({ socket, room }) => {
                 <Typography>Live chat</Typography>
             </Grid>
             <div className={styles.chatUI}>
-                <div className={styles.chatHistory}>
+                <div className={styles.chatHistory} ref={chatHistoryRef}>
                     {messageList.length !== 0 ? (
                         messageList.map((ele, ind) => {
                             return (
