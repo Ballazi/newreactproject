@@ -23,14 +23,16 @@
     margin-bottom: 8px;
     float: left;
     clear: both;
-    text-align: left;
+    max-width: 80%;
+    word-wrap: break-word;
 }
 
 .messageMe {
     margin-bottom: 8px;
     float: right;
     clear: both;
-    text-align: right;
+    max-width: 80%;
+    word-wrap: break-word;
 }
 
 .messageContentOther {
@@ -38,8 +40,6 @@
     border-radius: 0 8px 8px 8px;
     padding: 8px;
     display: inline-block; /* add this line */
-    max-width: 80%;
-    word-wrap: break-word;
 }
 
 .messageContentMe {
@@ -47,8 +47,6 @@
     border-radius: 8px 0 8px 8px;
     padding: 8px;
     display: inline-block; /* add this line */
-    max-width: 80%;
-    word-wrap: break-word;
 }
 
 .chatForm {
