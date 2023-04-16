@@ -21,9 +21,9 @@ const Wrapper = styled(Grid)(({ theme }) => ({
 
 
 
-const Chat = ({ socket, room }) => {
+const Chat = ({ socket, room, previousChat }) => {
     const [messageData, setMessageData] = useState('');
-    const [messageList, setMessageList] = useState([]);
+    const [messageList, setMessageList] = useState(previousChat);
     const currentUserId = localStorage.getItem('currentUserId');
     const currentUserName = localStorage.getItem("currentUserName");
     const chatHistoryRef = useRef(null);
@@ -38,7 +38,8 @@ const Chat = ({ socket, room }) => {
 
 
     useEffect(() => {
-        socket.on('message_recive', (data) => {
+        socket.on('message_recive', (data, output) => {
+            console.log("data...",output);
             setMessageList((currentList) => [...currentList, data]);
         });
         return () => {

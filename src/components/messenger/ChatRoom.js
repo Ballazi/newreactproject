@@ -6,10 +6,11 @@ import { Grid, Button, TextField } from '@mui/material';
 import Chat from './Chat';
 
 const ChatRoom = ({socket}) => {
-    const [room, setRoom] = useState("");
+    const [room, setRoom] = useState("12345");
     const [showChat, setShowChat] = useState(false);
     // const [socket, setSocket] = useState(null);
     const currentUserId = localStorage.getItem("currentUserId");
+    const [previousChat, setPreviousChat] = useState([]);
 
     // useEffect(() => {
     //     const socketInstance = io(ApiUrl.service);
@@ -24,14 +25,24 @@ const ChatRoom = ({socket}) => {
 
     useEffect(() => {
         if (socket) {
-            socket.on("join_response", (data) => {
+            socket.on("join_response", (data, previousChatData, message) => {
                 // console.log("data", data);
                 if (data) {
                     setShowChat(true);
+                    setPreviousChat(previousChatData);
+                    console.log(message);
+                }
+                else{
+                    console.log(message);
                 }
             });
         }
     }, [socket]);
+
+    useEffect(() => {
+        joinRoom();
+    }, [])
+    
 
     const joinRoom = () => {
         if (room !== "") {
@@ -69,7 +80,7 @@ const ChatRoom = ({socket}) => {
                     </Grid>
                 </Grid>
             ) : (
-                <Chat socket={socket} room={room} />
+                <Chat socket={socket} room={room} previousChat={previousChat} />
             )}
         </>
     )
