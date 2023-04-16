@@ -25,6 +25,7 @@ const Chat = ({ socket, room }) => {
     const [messageData, setMessageData] = useState('');
     const [messageList, setMessageList] = useState([]);
     const currentUserId = localStorage.getItem('currentUserId');
+    const currentUserName = localStorage.getItem("currentUserName");
     const chatHistoryRef = useRef(null);
 
 
@@ -51,8 +52,9 @@ const Chat = ({ socket, room }) => {
             const obj = {
                 room,
                 currentUserId,
+                currentUserName,
                 message: messageData,
-                time: moment(new Date()).format('HH:MM'),
+                time: moment(new Date()).format('h:mm A'),
             };
             setMessageList((currentList) => [...currentList, obj]);
             socket.emit('message_sent', obj);
@@ -71,7 +73,12 @@ const Chat = ({ socket, room }) => {
                         messageList.map((ele, ind) => {
                             return (
                                 <div className={ele.currentUserId === currentUserId ? styles.messageMe : styles.messageOther} key={ind}>
+                                    {
+                                        ele.currentUserId === currentUserId ? "" :
+                                            <div className={styles.sender}>{ele.currentUserName}</div>
+                                    }
                                     <div className={ele.currentUserId === currentUserId ? styles.messageContentMe : styles.messageContentOther}>{ele.message}</div>
+                                    <div className={styles.time_stamp}>{ele.time}</div>
                                 </div>
                             );
                         })

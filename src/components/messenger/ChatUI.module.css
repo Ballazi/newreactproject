@@ -20,6 +20,8 @@
 /* ::-webkit-scrollbar': { width: '0px'} */
 
 .messageOther {
+    border-radius: 0 8px 8px 8px;
+    background-color: #eee;
     margin-bottom: 8px;
     float: left;
     clear: both;
@@ -28,6 +30,8 @@
 }
 
 .messageMe {
+    background-color: #91ea38;
+    border-radius: 8px 0 8px 8px;
     margin-bottom: 8px;
     float: right;
     clear: both;
@@ -35,20 +39,37 @@
     word-wrap: break-word;
 }
 
+.sender {
+    /* display: inline-block; */
+    width: 100%;
+    text-align: left;
+    color: #0073e6;
+    font-size: 11px;
+    padding: 5px;
+    margin: 0;
+    float: left;
+    clear: both;
+}
+
 .messageContentOther {
-    background-color: #eee;
-    border-radius: 0 8px 8px 8px;
-    padding: 8px;
     display: inline-block;
-    /* add this line */
+    padding: 5px;
+    margin: 0;
+    /* float: left; */
 }
 
 .messageContentMe {
-    background-color: #91ea38;
-    border-radius: 8px 0 8px 8px;
-    padding: 8px;
     display: inline-block;
-    /* add this line */
+    padding: 5px;
+    margin: 0;
+}
+
+.time_stamp {
+    font-size: 9px;
+    padding: 15px 5px 5px 10px;
+    margin: 0;
+    float: right;
+    clear: both;
 }
 
 .chatForm {

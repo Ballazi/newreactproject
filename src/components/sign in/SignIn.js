@@ -43,6 +43,7 @@ const SignUp = () => {
             localStorage.setItem("login", true);
             localStorage.setItem("token", res.data.data.token);
             localStorage.setItem("currentUserId", res.data.data.currentUser.id);
+            localStorage.setItem("currentUserName",res.data.data.currentUser.name);
             setObj({ type: "success", message: res.data.message });
             setOpneNotification(true);
             setEmail("");
