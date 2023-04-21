@@ -22,6 +22,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+import parse from 'html-react-parser';
 // import ShareIcon from '@mui/icons-material/Share';
 
 // const theme = createTheme({
@@ -390,6 +391,7 @@ const ContentPage = (props) => {
                                 fontWeight="500"
                             >
                                 {blogObject.description}
+                                {/* {parse(blogObject.description)} */}
                             </Typography>
                         </CardContent>
                         <hr />

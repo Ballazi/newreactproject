@@ -9,6 +9,8 @@ import apiUrl from "../../api/api.json";
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AddBlogs = () => {
   const [type, setType] = useState("");
@@ -34,11 +36,11 @@ const AddBlogs = () => {
     axios.post(
       apiUrl.addBlog,
       {
-        "blog_type" : type,
-        "title" : title,
-        "description" : description,
-        "user_id" : currentUserId,
-        "image" : image
+        "blog_type": type,
+        "title": title,
+        "description": description,
+        "user_id": currentUserId,
+        "image": image
       },
       {
         headers: {
@@ -68,6 +70,30 @@ const AddBlogs = () => {
         setOpen(false);
       })
   }
+
+  const modules = {
+    toolbar: [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ['blockquote', 'code-block'],
+      ["blockquote"],
+
+      // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+
+      // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      // [{ 'font': [] }],
+      // [{ align: [] }],
+      // ["link"],
+      ['link', 'image'],
+      // ['clean']
+    ],
+  };
 
 
   return (
@@ -123,6 +149,16 @@ const AddBlogs = () => {
             />
           </Grid>
           <Grid sx={{ my: "2%" }}>
+            {/* <InputLabel id="demo-simple-select-label">
+              Description*
+            </InputLabel>
+            <ReactQuill
+              theme="snow"
+              modules={modules}
+              value={description}
+              onChange={e => setDescription(e)}
+            /> */}
+
             <TextField
               size='small'
               required
