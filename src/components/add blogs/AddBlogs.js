@@ -149,7 +149,7 @@ const AddBlogs = () => {
             />
           </Grid>
           <Grid sx={{ my: "2%" }}>
-            {/* <InputLabel id="demo-simple-select-label">
+            <InputLabel id="demo-simple-select-label">
               Description*
             </InputLabel>
             <ReactQuill
@@ -157,9 +157,9 @@ const AddBlogs = () => {
               modules={modules}
               value={description}
               onChange={e => setDescription(e)}
-            /> */}
+            />
 
-            <TextField
+            {/* <TextField
               size='small'
               required
               fullWidth
@@ -167,7 +167,7 @@ const AddBlogs = () => {
               label='Description'
               value={description}
               onChange={e => setDescription(e.target.value)}
-            />
+            /> */}
           </Grid>
           <Grid sx={{ my: "2%" }}>
             <Button

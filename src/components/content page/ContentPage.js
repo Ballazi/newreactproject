@@ -23,6 +23,7 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import parse from 'html-react-parser';
+import styles from "./ContentPage.module.css";
 // import ShareIcon from '@mui/icons-material/Share';
 
 // const theme = createTheme({
@@ -350,6 +351,7 @@ const ContentPage = (props) => {
             })
     }
 
+    const descriptionString = String(blogObject.description);
 
     return (
         <>
@@ -385,14 +387,14 @@ const ContentPage = (props) => {
                                 objectFit: "contain"
                             }}
                         />
-                        <CardContent>
-                            <Typography
+                        <CardContent className={styles.card_content}>
+                            {/* <Typography
                                 fontSize={"18px"}
                                 fontWeight="500"
-                            >
-                                {blogObject.description}
-                                {/* {parse(blogObject.description)} */}
-                            </Typography>
+                            > */}
+                                {/* {descriptionString} */}
+                                {parse(descriptionString)}
+                            {/* </Typography> */}
                         </CardContent>
                         <hr />
                         <CardActions >
