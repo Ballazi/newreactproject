@@ -5,7 +5,7 @@ import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Tooltip } from '@mui/material';
 import pic from "../../asset/pic.png";
 import { styled } from "@mui/material/styles";
 import apiUrl from "../../api/api.json";
@@ -24,6 +24,7 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import parse from 'html-react-parser';
 import styles from "./ContentPage.module.css";
+import EditIcon from '@mui/icons-material/Edit';
 // import ShareIcon from '@mui/icons-material/Share';
 
 // const theme = createTheme({
@@ -39,7 +40,7 @@ import styles from "./ContentPage.module.css";
 // });
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
-    background: 'linear-gradient(#f7efd7, #00e676, #009688)',
+    background: 'linear-gradient(90deg, #009688, #00e676, #009688)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
 }));
@@ -323,7 +324,7 @@ const ContentPage = (props) => {
     const deleteController = (deleteBlog) => {
         setOpen(true);
         axios.delete(
-            apiUrl.deleteBlog + blogObject.bloggerId + "/" + blogObject.blog_id ,
+            apiUrl.deleteBlog + blogObject.bloggerId + "/" + blogObject.blog_id,
             {
                 headers: {
                     "Authorization": token
@@ -334,7 +335,7 @@ const ContentPage = (props) => {
                 if (res.data.success) {
                     setObj({ type: "warning", message: res.data.message });
                     setOpneNotification(true);
-                    setTimeout(() => {navigate(`/${blogObject.blog_type}`)},1000);
+                    setTimeout(() => { navigate(`/${blogObject.blog_type}`) }, 1000);
                     // navigate(`/${blogObject.blog_type}`);
                 }
                 else {
@@ -351,6 +352,12 @@ const ContentPage = (props) => {
             })
     }
 
+    // const editController = () => {
+    //     navigate('/appBlog', {
+    //         state: blogObject
+    //     });
+    // };
+
     const descriptionString = String(blogObject.description);
 
     return (
@@ -362,7 +369,7 @@ const ContentPage = (props) => {
                 <CircularProgress color="inherit" />
             </Backdrop>
 
-            {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : ""}
+            {opneNotification ? <Notification setNotification={setNotification} obj={obj} /> : null}
 
             <Grid container spacing={4}>
                 <Grid item xs={12} sm={12} md={12}>
@@ -392,8 +399,8 @@ const ContentPage = (props) => {
                                 fontSize={"18px"}
                                 fontWeight="500"
                             > */}
-                                {/* {descriptionString} */}
-                                {parse(descriptionString)}
+                            {/* {descriptionString} */}
+                            {parse(descriptionString)}
                             {/* </Typography> */}
                         </CardContent>
                         <hr />
@@ -401,19 +408,23 @@ const ContentPage = (props) => {
                             <Grid container justifyContent="space-between" alignItems={"center"}>
                                 <Grid item>
                                     {/* <Grid container spacing={2}> */}
-                                    <IconButton aria-label="add to favorites" title='Like'>
-                                        {
-                                            liked ? <ThumbUpAltIcon sx={{ color: "green" }} onClick={() => likeController()} /> : <ThumbUpOffAltIcon sx={{ color: "green" }} onClick={() => likeController()} />
-                                        }
-                                    </IconButton>
+                                    <Tooltip title="Like">
+                                        <IconButton aria-label="add to favorites">
+                                            {
+                                                liked ? <ThumbUpAltIcon sx={{ color: "green" }} onClick={() => likeController()} /> : <ThumbUpOffAltIcon sx={{ color: "green" }} onClick={() => likeController()} />
+                                            }
+                                        </IconButton>
+                                    </Tooltip>
                                     {
                                         blogObject.likes
                                     }
-                                    <IconButton aria-label="add to favorites" title='Unlike'>
-                                        {
-                                            unLike ? <ThumbDownAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} /> : <ThumbDownOffAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} />
-                                        }
-                                    </IconButton>
+                                    <Tooltip title="Dislike">
+                                        <IconButton aria-label="add to favorites" >
+                                            {
+                                                unLike ? <ThumbDownAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} /> : <ThumbDownOffAltIcon sx={{ color: "green" }} onClick={() => unLikeController()} />
+                                            }
+                                        </IconButton>
+                                    </Tooltip>
                                     {
                                         blogObject.unlike
                                     }
@@ -421,11 +432,21 @@ const ContentPage = (props) => {
                                 </Grid>
                                 <Grid item>
                                     {
-                                        currentUserId === blogObject.bloggerId ?
-                                            <IconButton aria-label="settings">
-                                                <ClearIcon onClick={() => deleteController()} />
-                                            </IconButton>
-                                            : ""
+                                        currentUserId === blogObject.bloggerId ? (
+                                            <>
+                                                {/* <Tooltip title="Edit blog">
+                                                    <IconButton aria-label="settings">
+                                                        <EditIcon color="warning" onClick={() => editController()} />
+                                                    </IconButton>
+                                                </Tooltip> */}
+                                                <Tooltip title="Delete blog">
+                                                    <IconButton aria-label="settings">
+                                                        <ClearIcon color="error" onClick={() => deleteController()} />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </>
+                                        )
+                                            : null
                                     }
                                 </Grid>
                             </Grid>
@@ -467,7 +488,7 @@ const ContentPage = (props) => {
                                                     onClick={() => followController(blogObject.bloggerId)}
                                                 >
                                                     FOLLOWING
-                                                </Button> : ""
+                                                </Button> : null
                                     }
                                 </Grid>
                             </Grid>
