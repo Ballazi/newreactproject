@@ -11,6 +11,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { playSound, speak } from '../../Service';
 
 const AddBlogs = () => {
   const [type, setType] = useState("");
@@ -118,7 +119,7 @@ const AddBlogs = () => {
                 size='small'
                 value={type}
                 label="Type *"
-                onChange={e => setType(e.target.value)}
+                onChange={e => { playSound(); setType(e.target.value) }}
               >
                 <MenuItem value={"Travelling"}>Travelling</MenuItem>
                 <MenuItem value={"Food"}>Food</MenuItem>
@@ -134,7 +135,7 @@ const AddBlogs = () => {
               variant='outlined'
               label='Title'
               value={title}
-              onChange={e => setTitle(e.target.value)}
+              onChange={e => { playSound(); setTitle(e.target.value)}}
             />
           </Grid>
           <Grid sx={{ my: "2%" }}>
